@@ -25,7 +25,7 @@ const movieSchema = new mongoose.Schema(
     },
     image: {
       type: String,
-      required: [true, 'Поле "Ссылка на фото" должно быть заполнено'],
+      required: [true, 'Поле "Ссылка на постер" должно быть заполнено'],
       validate: {
         validator: (v) => validator.isURL(v),
         message: 'Некорректный URL',
@@ -33,7 +33,7 @@ const movieSchema = new mongoose.Schema(
     },
     trailerLink: {
       type: String,
-      required: [true, 'Поле "Ссылка на фото" должно быть заполнено'],
+      required: [true, 'Поле "Ссылка на трейлер" должно быть заполнено'],
       validate: {
         validator: (v) => validator.isURL(v),
         message: 'Некорректный URL',

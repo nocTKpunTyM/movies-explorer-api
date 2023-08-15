@@ -31,7 +31,7 @@ app.get('/crash-test', () => {
 });
 
 const usersRouter = require('./routes/users');
-const cardsRouter = require('./routes/cards');
+const moviesRouter = require('./routes/movies');
 
 const { createUser, login } = require('./controllers/users');
 const auth = require('./middlewares/auth');
@@ -43,7 +43,7 @@ app.use(requestLogger); // подключаем логгер запросов
 app.post('/signin', signinValidation, login);
 app.post('/signup', signupValidation, createUser);
 app.use('/users', auth, usersRouter);
-app.use('/cards', auth, cardsRouter);
+app.use('/movies', auth, moviesRouter);
 app.use((req, res, next) => {
   next(new NotFoundError({ message: 'Страница не найдена' }));
 });
