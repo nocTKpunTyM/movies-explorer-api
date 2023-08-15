@@ -5,8 +5,6 @@ const regForUrl = /^((ftp|http|https):\/\/)?(www\.)?([A-Za-zА-Яа-я0-9]{1}[A-
 const signupValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().min(2).max(30),
-    about: Joi.string().min(2).max(30),
-    avatar: Joi.string().regex(regForUrl),
     email: Joi.string().required().email(),
     password: Joi.string().required().min(8),
   }),
@@ -22,19 +20,7 @@ const signinValidation = celebrate({
 const updateUserValidation = celebrate({
   body: Joi.object().keys({
     name: Joi.string().required().min(2).max(30),
-    about: Joi.string().required().min(2).max(30),
-  }),
-});
-
-const updateAvatarValidation = celebrate({
-  body: Joi.object().keys({
-    avatar: Joi.string().required().regex(regForUrl),
-  }),
-});
-
-const userIdValidation = celebrate({
-  params: Joi.object().keys({
-    id: Joi.string().required().length(24).hex(),
+    email: Joi.string().required().email(),
   }),
 });
 
@@ -55,8 +41,6 @@ module.exports = {
   signupValidation,
   signinValidation,
   updateUserValidation,
-  updateAvatarValidation,
   createCardValidation,
   cardValidation,
-  userIdValidation,
 };

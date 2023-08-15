@@ -18,8 +18,6 @@ const createUser = (req, res, next) => {
           res.status(201).send({
             _id: user._id,
             name: user.name,
-            about: user.about,
-            avatar: user.avatar,
             email: user.email,
           });
         })
@@ -59,60 +57,16 @@ const getUser = (req, res, next) => {
       res.send({
         _id: user._id,
         name: user.name,
-        about: user.about,
-        avatar: user.avatar,
         email: user.email,
       });
-    })
-    .catch((next));
-};
-
-const getUserId = (req, res, next) => {
-  const { id } = req.params;
-  User.findById(id)
-    .orFail(new NotFoundError('Нет пользователя с таким id'))
-    .then((user) => {
-      res.send({
-        _id: user._id,
-        name: user.name,
-        about: user.about,
-        avatar: user.avatar,
-        email: user.email,
-      });
-    })
-    .catch(next);
-};
-
-const getUsers = (req, res, next) => {
-  User.find({})
-    .orFail(new NotFoundError('Нет пользователей'))
-    .then((users) => {
-      res.send(users);
     })
     .catch((next));
 };
 
 const updateUser = (req, res, next) => {
-  const { name, about } = req.body;
+  const { name, email } = req.body;
   const id = req.user._id;
-  User.findByIdAndUpdate(id, { name, about }, { new: true, runValidators: true })
-    .orFail(new NotFoundError('Нет пользователя с таким id'))
-    .then((user) => {
-      res.send(user);
-    })
-    .catch((err) => {
-      if (err.name === 'ValidationError') {
-        next(new ValidationError('Неккоректно введены данные'));
-      } else {
-        next(err);
-      }
-    });
-};
-
-const updateAvatar = (req, res, next) => {
-  const { avatar } = req.body;
-  const id = req.user._id;
-  User.findByIdAndUpdate(id, { avatar }, { new: true, runValidators: true })
+  User.findByIdAndUpdate(id, { name, email }, { new: true, runValidators: true })
     .orFail(new NotFoundError('Нет пользователя с таким id'))
     .then((user) => {
       res.send(user);
@@ -129,9 +83,6 @@ const updateAvatar = (req, res, next) => {
 module.exports = {
   createUser,
   getUser,
-  getUsers,
   updateUser,
-  updateAvatar,
   login,
-  getUserId,
 };
