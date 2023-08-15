@@ -1,5 +1,6 @@
 {
-  "name": "react-mesto-api-full-gha",
+  "name": "movies-explorer-api",
+  "author": "Nikishin Andrey",
   "version": "0.1.0",
   "dependencies": {
     "bcrypt": "^5.1.0",
