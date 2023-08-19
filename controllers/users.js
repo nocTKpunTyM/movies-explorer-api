@@ -9,6 +9,12 @@ const NotFoundError = require('../errors/not-found-err');
 const ReplicateError = require('../errors/replicate-err');
 const ValidationError = require('../errors/validation-err');
 
+const {
+  NOT_FOUND_USER,
+  NOT_VALID,
+  REPLICATE_EMAIL,
+} = require('../utils/messages');
+
 const createUser = (req, res, next) => {
   const { password } = req.body;
   return bcrypt.hash(password, 10)
@@ -23,9 +29,9 @@ const createUser = (req, res, next) => {
         })
         .catch((err) => {
           if (err.code === 11000) {
-            next(new ReplicateError('Пользователь с таким email уже есть'));
+            next(new ReplicateError(REPLICATE_EMAIL));
           } else if (err.name === 'ValidationError') {
-            next(new ValidationError('Неккоректно введены данные'));
+            next(new ValidationError(NOT_VALID));
           } else {
             next(err);
           }
@@ -42,7 +48,7 @@ const login = (req, res, next) => {
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Неккоректно введены данные'));
+        next(new ValidationError(NOT_VALID));
       } else {
         next(err);
       }
@@ -52,7 +58,7 @@ const login = (req, res, next) => {
 const getUser = (req, res, next) => {
   const id = req.user._id;
   User.findById(id)
-    .orFail(new NotFoundError('Нет пользователя с таким id'))
+    .orFail(new NotFoundError(NOT_FOUND_USER))
     .then((user) => {
       res.send({
         _id: user._id,
@@ -67,13 +73,13 @@ const updateUser = (req, res, next) => {
   const { name, email } = req.body;
   const id = req.user._id;
   User.findByIdAndUpdate(id, { name, email }, { new: true, runValidators: true })
-    .orFail(new NotFoundError('Нет пользователя с таким id'))
+    .orFail(new NotFoundError(NOT_FOUND_USER))
     .then((user) => {
       res.send(user);
     })
     .catch((err) => {
       if (err.name === 'ValidationError') {
-        next(new ValidationError('Неккоректно введены данные'));
+        next(new ValidationError(NOT_VALID));
       } else {
         next(err);
       }

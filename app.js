@@ -2,11 +2,12 @@ const express = require('express');
 const mongoose = require('mongoose');
 const helmet = require('helmet');
 const { errors } = require('celebrate');
+const { DB_URL } = require('./utils/config');
 const limiter = require('./utils/limiter');
 const routers = require('./routes');
 const cors = require('./middlewares/cors');
 
-const { PORT = 3000, DB_URL = 'mongodb://127.0.0.1:27017/bitfilmsdb' } = process.env;
+const { PORT = 3000 } = process.env;
 mongoose.connect(DB_URL);
 
 const app = express();
