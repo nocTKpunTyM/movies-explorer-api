@@ -12,8 +12,8 @@ const cors = (req, res, next) => {
 
   const requestHeaders = req.headers['access-control-request-headers'];
 
-  if (allowedCors.includes(origin)) {
-    res.header('Access-Control-Allow-Origin', '*'); // Поменять на origin
+  if (allowedCors) { // после тестирования добавить .includes(origin)
+    res.header('Access-Control-Allow-Origin', origin);
   }
 
   if (method === 'OPTIONS') {
